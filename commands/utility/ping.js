@@ -5,6 +5,10 @@ module.exports = {
         .setName('ping')
         .setDescription('Replies with Pong!'),
     async execute(interaction) {
-        await interaction.reply('Pong!');
+        try {
+            await interaction.reply('Pong!');
+        } catch (error) {
+            console.error('Error executing ping command:', error);
+        }
     },
 };
