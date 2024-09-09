@@ -1,13 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { token } = require('./config.json');
+require('dotenv').config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
+const commandFolders = fs.readdirSync(foldersPath).filter(file => {
+  return fs.statSync(path.join(foldersPath, file)).isDirectory() && file !== '.DS_Store';
+});
 
 for (const folder of commandFolders) {
   const commandsPath = path.join(foldersPath, folder);
@@ -36,4 +38,4 @@ for (const file of eventFiles) {
   }
 }
 
-client.login(token);
+client.login(process.env.DISCORD_TOKEN);
